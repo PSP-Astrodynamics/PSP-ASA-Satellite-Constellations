@@ -6,12 +6,30 @@ clc; clear; close all
 
 %Create a new STK instance (all properties stored in 'STK' struct)
 STK.app = actxserver('STK13.application');
+STK.app.Visible = 1;
 STK.root = STK.app.Personality2;
 
 %Define STK scenario, and load scenario
+STK.root.CloseScenario();
 STK.scenarioPath = 'C:\Users\evanc\Documents\STK_ODTK 13\SatCon\SatCon.sc';
-scenario = STK.root.LoadScenario(STK.scenarioPath);
+STK.root.Load(STK.scenarioPath);
+scenario = STK.root.CurrentScenario;
 
+coverage = STK.root.CurrentScenario.Children.Item('CoverageDefinition1');
+dp = coverage.DataProviders.Item('Coverage');
+
+% Specify the time interval
+startTime = STK.root.CurrentScenario.StartTime;
+stopTime  = STK.root.CurrentScenario.StopTime;
+
+% Get the "Coverage by Time" data provider
+dpElement = dp.Exec(startTime, stopTime);
+
+% Extract time and coverage percent
+times           = cell2mat(dpElement.DataSets.GetDataSetByName('Time').GetValues);
+coveragePct     = cell2mat(dpElement.DataSets.GetDataSetByName('Coverage').GetValues);
+%Compute access
+%coverageAccess = STKaccess(coverage);
 
 %Leave and close STK
 %STK.root.CloseScenario;
