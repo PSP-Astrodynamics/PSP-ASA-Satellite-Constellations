@@ -21,7 +21,6 @@ dp = coverage.DataProviders.Item('Percent Coverage');
 % Specify the time interval
 startTime = STK.root.CurrentScenario.StartTime;
 stopTime  = STK.root.CurrentScenario.StopTime;
-%timeStep = STK.root.CurrentScenario.Interval
 timeStep = 60;
 
 % Get the "Coverage by Time" data provider
@@ -29,8 +28,11 @@ dpElement = dp.Exec(startTime, stopTime, timeStep);
 
 % Extract time and coverage percent
 times = cell2mat(dpElement.DataSets.GetDataSetByName('Time').GetValues);
-coveragePct = cell2mat(dpElement.DataSets.GetDataSetByName('Percent Coverage').GetValues);
+coveragePct     = cell2mat(dpElement.DataSets.GetDataSetByName('Percent Coverage').GetValues);
+
+%Compute access
+coverageAccess = STKaccess(coverage);
 
 %Leave and close STK
-%STK.root.CloseScenario();
+%STK.root.CloseScenario;
 %STK.app.Quit;
