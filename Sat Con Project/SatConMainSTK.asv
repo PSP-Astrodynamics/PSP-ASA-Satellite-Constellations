@@ -15,24 +15,28 @@ STK.scenarioPath = 'C:\Users\evanc\Documents\STK_ODTK 13\SatCon\SatCon.sc';
 STK.root.Load(STK.scenarioPath);
 scenario = STK.root.CurrentScenario;
 
-coverage = STK.root.CurrentScenario.Children.Item('CoverageDefinition1');
-dp = coverage.DataProviders.Item('Percent Coverage');
-
 % Specify the time interval
 startTime = STK.root.CurrentScenario.StartTime;
 stopTime  = STK.root.CurrentScenario.StopTime;
+%timeStep = STK.root.CurrentScenario.Interval
 timeStep = 60;
 
+%Access Coverage Areas
+littleBad = STK.root.CurrentScenario.Children.Item('LittleBad');
+dpLB = littleBad.DataProviders.Item('Access Duration');
+
+reallyBad = STK.root.CurrentScenario.Children.Item('ReallyBad');
+dpRB = reallyBad.DataProviders.Item('Access Duration');
+
+pri
+
 % Get the "Coverage by Time" data provider
-dpElement = dp.Exec(startTime, stopTime, timeStep);
+dpElement = dpLB.Exec(startTime, stopTime, timeStep);
 
 % Extract time and coverage percent
 times = cell2mat(dpElement.DataSets.GetDataSetByName('Time').GetValues);
-coveragePct     = cell2mat(dpElement.DataSets.GetDataSetByName('Percent Coverage').GetValues);
-
-%Compute access
-coverageAccess = STKaccess(coverage);
+coveragePct = cell2mat(dpElement.DataSets.GetDataSetByName('Percent Coverage').GetValues);
 
 %Leave and close STK
-%STK.root.CloseScenario;
+%STK.root.CloseScenario();
 %STK.app.Quit;
