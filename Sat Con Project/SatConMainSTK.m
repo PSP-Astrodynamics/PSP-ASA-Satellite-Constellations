@@ -27,29 +27,39 @@ littleBad = STK.root.CurrentScenario.Children.Item('LittleBad');
 reallyBad = STK.root.CurrentScenario.Children.Item('ReallyBad');
 priority = STK.root.CurrentScenario.Children.Item('Priority');
 
-%Create Access from Constellation to Areas
-accessLB = satCon.GetAccessToObject(littleBad);
-accessRB = satCon.GetAccessToObject(reallyBad);
-accessP  = satCon.GetAccessToObject(priority);
-
 %Compute Acesses
-accessLB.ComputeAccess();
-accessRB.ComputeAccess();
-accessP.ComputeAccess();
+littleBad.ComputeAccesses();
+reallyBad.ComputeAccesses();
+priority.ComputeAccesses();
+
+littleBad.ExportAccessesAsText('C:\Users\evanc\Documents\LittleBadAccess.txt');
+dataLB = readtable('C:\Users\evanc\Documents\LittleBadAccess.txt');
+disp(dataLB);
 
 %Extract Access Intervals and Durations
 dpLB = littleBad.DataProviders.Item('Access Duration');
-dpRB = reallyBad.DataProviders.Item('Access Duration');
-dpP  = priority.DataProviders.Item('Access Duration');
+%dpRB = reallyBad.DataProviders.Item('Access Duration');
+%dpP  = priority.DataProviders.Item('Access Duration');
 
-dpElementLB = dpLB.Exec(startTime, stopTime, timeStep);
-dpElementRB = dpRB.Exec(startTime, stopTime, timeStep);
-dpElementP  = dpP.Exec(startTime, stopTime, timeStep);
+%dpElementLB = dpLB.ExecElements();
+%dpElementRB = dpRB.Exec();
+%dpElementP  = dpP.Exec();
 
-durationLB = cell2mat(dpElmementLB.DataSets.GetDataSetByName('Duration').GetValues);
-durationRB = cell2mat(dpElementRB.DataSets.GetDataSetByName('Duration').GetValues);
-durationP  = cell2mat(dpElementP.DataSets.GetDataSetByName('Duration').GetValues);
+% See exactly what fields are returned
+for j = 0 : dpElementLB.DataSets.Count - 1
+    disp(dpElementLB.DataSets.Item(j).Name);
+end
+
+% Check children of the coverage definition
+for i = 0 : littleBad.Children.Count - 1
+    child = littleBad.Children.Item(i);
+    fprintf('%s (%s)\n', child.InstanceName, child.ClassName);
+end
+
+%durationLB = cell2mat(dpElmementLB.DataSets.GetDataSetByName('Duration').GetValues);
+%durationRB = cell2mat(dpElementRB.DataSets.GetDataSetByName('Duration').GetValues);
+%durationP  = cell2mat(dpElementP.DataSets.GetDataSetByName('Duration').GetValues);
 
 %Leave and close STK
-%STK.root.CloseScenario();
-%STK.app.Quit;
+STK.root.CloseScenario();
+STK.app.Quit;
