@@ -33,22 +33,19 @@ accessRB = satCon.GetAccessToObject(reallyBad);
 accessP  = satCon.GetAccessToObject(priority);
 
 %Compute Acesses
-accessLB.ComputeAccess();
-accessRB.ComputeAccess();
-accessP.ComputeAccess();
+a
 
-%Extract Access Intervals and Durations
 dpLB = littleBad.DataProviders.Item('Access Duration');
 dpRB = reallyBad.DataProviders.Item('Access Duration');
-dpP  = priority.DataProviders.Item('Access Duration');
-
+dpP = priority.DataProviders.Item('Access Duration');
+%
 dpElementLB = dpLB.Exec(startTime, stopTime, timeStep);
 dpElementRB = dpRB.Exec(startTime, stopTime, timeStep);
 dpElementP  = dpP.Exec(startTime, stopTime, timeStep);
 
-durationLB = cell2mat(dpElmementLB.DataSets.GetDataSetByName('Duration').GetValues);
-durationRB = cell2mat(dpElementRB.DataSets.GetDataSetByName('Duration').GetValues);
-durationP  = cell2mat(dpElementP.DataSets.GetDataSetByName('Duration').GetValues);
+% Extract time and access duration
+times = cell2mat(dpElementLB.DataSets.GetDataSetByName('Time').GetValues);
+coverageTime = cell2mat(dpElementLB.DataSets.GetDataSetByName('Access Duration').GetValues);
 
 %Leave and close STK
 %STK.root.CloseScenario();
