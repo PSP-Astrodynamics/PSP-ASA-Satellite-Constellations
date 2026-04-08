@@ -4,6 +4,8 @@
 % Author: Evan Paull
 clc; clear; close all
 
+X = [n, inclination, RAAN_spacing];
+
 %Create a new STK instance (all properties stored in 'STK' struct)
 STK.app = actxserver('STK13.application');
 STK.app.Visible = 1;
@@ -15,38 +17,20 @@ STK.scenarioPath = 'C:\Users\evanc\Documents\STK_ODTK 13\SatCon\SatCon.sc';
 STK.root.Load(STK.scenarioPath);
 scenario = STK.root.CurrentScenario;
 
-% Specify the time interval
-startTime = STK.root.CurrentScenario.StartTime;
-stopTime  = STK.root.CurrentScenario.StopTime;
-%timeStep = STK.root.CurrentScenario.Interval
-timeStep = 60;
-
 %Access Relevant Objects
 satCon = STK.root.CurrentScenario.Children.Item('iAmTheConstellationNow');
 littleBad = STK.root.CurrentScenario.Children.Item('LittleBad');
 reallyBad = STK.root.CurrentScenario.Children.Item('ReallyBad');
 priority = STK.root.CurrentScenario.Children.Item('Priority');
 
-%Create Access from Constellation to Areas
-accessLB = satCon.GetAccessToObject(littleBad);
-accessRB = satCon.GetAccessToObject(reallyBad);
-accessP  = satCon.GetAccessToObject(priority);
+times = runSTK(); %Compute Accesses and Extract Coverage Durations
 
-%Compute Acesses
-a
+%CALCULATE FITNESS
 
-dpLB = littleBad.DataProviders.Item('Access Duration');
-dpRB = reallyBad.DataProviders.Item('Access Duration');
-dpP = priority.DataProviders.Item('Access Duration');
-%
-dpElementLB = dpLB.Exec(startTime, stopTime, timeStep);
-dpElementRB = dpRB.Exec(startTime, stopTime, timeStep);
-dpElementP  = dpP.Exec(startTime, stopTime, timeStep);
+%RUN GA
 
-% Extract time and access duration
-times = cell2mat(dpElementLB.DataSets.GetDataSetByName('Time').GetValues);
-coverageTime = cell2mat(dpElementLB.DataSets.GetDataSetByName('Access Duration').GetValues);
+%OUTPUT RESULTS
 
 %Leave and close STK
-%STK.root.CloseScenario();
-%STK.app.Quit;
+STK.root.CloseScenario();
+STK.app.Quit;
