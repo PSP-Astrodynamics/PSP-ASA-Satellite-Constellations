@@ -4,7 +4,7 @@
 % Author: Evan Paull
 clc; clear; close all
 
-X = [n, inclination, RAAN_spacing];
+%X = [n, inclination, RAAN_spacing];
 
 %Create a new STK instance (all properties stored in 'STK' struct)
 STK.app = actxserver('STK13.application');
@@ -19,16 +19,18 @@ scenario = STK.root.CurrentScenario;
 
 %Access Relevant Objects
 satCon = STK.root.CurrentScenario.Children.Item('iAmTheConstellationNow');
-littleBad = STK.root.CurrentScenario.Children.Item('LittleBad');
-reallyBad = STK.root.CurrentScenario.Children.Item('ReallyBad');
-priority = STK.root.CurrentScenario.Children.Item('Priority');
 
-times = runSTK(); %Compute Accesses and Extract Coverage Durations
+times = runSTK(STK); %Compute Accesses and Extract Coverage Durations
+fprintf("COVERAGE TIMES\n")
+areas = ["Little Bad: ", "Really Bad: ", "Priority:   "];
+for i = 1:length(times)
+    fprintf("%s %.3f sec \n", areas(i), times(i))
+end
 
 %CALCULATE FITNESS
 
 %RUN GA
-    %Update constellation function
+%updateConstellation(satCon, X);
 
 %OUTPUT RESULTS
 

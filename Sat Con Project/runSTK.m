@@ -1,6 +1,11 @@
-function [coverageTimes] = runSTK()
+function [coverageTimes] = runSTK(STK)
     % This function runs the STK propagation by computing accesses and 
     % returns the coverage time for the three coverage definitions.
+
+    %Access Coverage Areas
+    littleBad = STK.root.CurrentScenario.Children.Item('LittleBad');
+    reallyBad = STK.root.CurrentScenario.Children.Item('ReallyBad');
+    priority = STK.root.CurrentScenario.Children.Item('Priority');
 
     %Compute Acesses
     littleBad.ComputeAccesses();
