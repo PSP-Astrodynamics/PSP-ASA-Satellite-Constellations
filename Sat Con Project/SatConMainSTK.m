@@ -4,7 +4,7 @@
 % Author: Evan Paull
 clc; clear; close all
 
-%X = [n, inclination, RAAN_spacing];
+%X = [planes, slots, phase, inclination, RAAN];
 
 %Create a new STK instance (all properties stored in 'STK' struct)
 STK.app = actxserver('STK13.application');
@@ -13,7 +13,7 @@ STK.root = STK.app.Personality2;
 
 %Define STK scenario, and load scenario
 STK.root.CloseScenario();
-STK.scenarioPath = 'C:\Users\evanc\Documents\STK_ODTK 13\SatCon\SatCon.sc';
+STK.scenarioPath = 'C:\Users\ncleg\OneDrive\Documents\STK_ODTK 13\SatCon - Copy\SatCon.sc';
 STK.root.Load(STK.scenarioPath);
 scenario = STK.root.CurrentScenario;
 

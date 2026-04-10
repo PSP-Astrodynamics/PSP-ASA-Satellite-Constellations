@@ -14,7 +14,7 @@ fitness = zeros(size(population));
 for i = 1:length(population)
 
     score = 0;
-    if population(i,1)*population(i,2)>20 && population(i,1)*population(i,2)<2000 % planes * slots gives total number of satellites
+    if population(i,1)*population(i,2)>20 && population(i,1)*population(i,2)<2000 %planes * slots gives total number of satellites
         score = 1;
     end
     fitness(i) = fitness(i) + score * weight.orbs;
@@ -29,13 +29,13 @@ for i = 1:length(population)
     for b = 1:length(badAreas)
         %score = %math here
     end
-    fitness(i) = fitness(i) + score * weight.badArea;
+    fitness(i) = fitness(i) + score * weight.reallyBadArea;
 
     score = 0;
     for b = 1:length(reallyBadAreas)
         %score = %math here
     end
-    fitness(i) = fitness(i) + score * weight.reallyBadArea;
+    fitness(i) = fitness(i) + score * weight.badArea;
 
 end
 
