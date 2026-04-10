@@ -1,4 +1,9 @@
-function [fitness] = calculateFitness(population, targetAreas, badAreas, reallyBadAreas)
+function [fitness] = calculateFitness(population, timeInGoodAreas, timeInBadAreas, timeInReallyBadAreas)
+
+% population is an (i) x [planes, slots, phase, inclination, RAAN] matrix
+% timeInGoodAreas is an (i) x [seconds] vector
+% timeInBadAreas is an (i) x [seconds] vector
+% timeInReallyBadAreas is an (i) x [seconds] vector
 
 % calculates the fitness of each (chromosone, individual, etc) based on the
 % orbital parameters, and time spent in areas of interest
@@ -8,6 +13,9 @@ weight.goodArea = 0.3;
 weight.reallyBadArea = 0.2;
 weight.badArea = 0.1;
 
+maxGoodTime = max(timeInGoodAreas);
+maxBadTime = max(timeInBadAreas);
+maxReallyBadTime = max(timeInReallyBadAreas);
 
 fitness = zeros(size(population));
 
@@ -20,21 +28,15 @@ for i = 1:length(population)
     fitness(i) = fitness(i) + score * weight.orbs;
 
     score = 0;
-    for k = 1:length(targetAreas)
-        %score = %math here
-    end
+    score = timeInGoodAreas(i)/maxGoodTime;
     fitness(i) = fitness(i) + score* weight.goodArea;
 
     score = 0;
-    for b = 1:length(badAreas)
-        %score = %math here
-    end
+    score = 1 - timeInBadAreas(i)/maxBadTime;
     fitness(i) = fitness(i) + score * weight.badArea;
 
     score = 0;
-    for b = 1:length(reallyBadAreas)
-        %score = %math here
-    end
+    score = 1 - timeInReallyBadAreas(i)/maxReallyBadTime;
     fitness(i) = fitness(i) + score * weight.reallyBadArea;
 
 end
