@@ -8,6 +8,8 @@ function [fitness] = calculateFitness(population, timeInGoodAreas, timeInBadArea
 % calculates the fitness of each (chromosone, individual, etc) based on the
 % orbital parameters, and time spent in areas of interest
 
+% fitness of 1 is the best, 0 is the worst
+
 weight.orbs = 0.4;
 weight.goodArea = 0.3;
 weight.reallyBadArea = 0.2;
@@ -27,15 +29,15 @@ for i = 1:length(population)
     end
     fitness(i) = fitness(i) + score * weight.orbs;
 
-    score = 0;
+  
     score = timeInGoodAreas(i)/maxGoodTime;
     fitness(i) = fitness(i) + score* weight.goodArea;
 
-    score = 0;
+    
     score = 1 - timeInBadAreas(i)/maxBadTime;
     fitness(i) = fitness(i) + score * weight.badArea;
 
-    score = 0;
+    
     score = 1 - timeInReallyBadAreas(i)/maxReallyBadTime;
     fitness(i) = fitness(i) + score * weight.reallyBadArea;
 
