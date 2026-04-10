@@ -4,7 +4,16 @@
 % Author: Evan Paull
 clc; clear; close all
 
-%X = [n, inclination, RAAN_spacing];
+%Constellation Design Parameters
+P = 17; % # of planes
+S = 11; % # of sats per plane
+F = 3;  % Walker phasing parameter
+inc = 70;       % inclination [deg]
+a = 7078e3;     % semi-major axis. DOES NOT CHANGE [m]
+
+X = [P, S, F, inc]; %parameters to pass to GA
+
+T = P * S; %total satellites
 
 %Create a new STK instance (all properties stored in 'STK' struct)
 STK.app = actxserver('STK13.application');
@@ -18,9 +27,13 @@ STK.root.Load(STK.scenarioPath);
 scenario = STK.root.CurrentScenario;
 
 %Access Relevant Objects
-satCon = STK.root.CurrentScenario.Children.Item('iAmTheConstellationNow');
+satCon = scenario.Children.New('eConstellation', 'satCon');
 
-times = runSTK(STK); %Compute Accesses and Extract Coverage Durations
+updateConstellation(X, scenario, satCon)
+%satCon = scenario.Children.Item('iAmTheConstellationNow');
+
+
+times = runSTK(scenario); %Compute Accesses and Extract Coverage Durations
 fprintf("COVERAGE TIMES\n")
 areas = ["Little Bad: ", "Really Bad: ", "Priority:   "];
 for i = 1:length(times)
@@ -30,7 +43,6 @@ end
 %CALCULATE FITNESS
 
 %RUN GA
-%updateConstellation(satCon, X);
 
 %OUTPUT RESULTS
 

@@ -20,16 +20,10 @@ inc = 70;       % inclination [deg]
     sat = walkerDelta(sc, a, inc, T, P, F);
 
     elements = zeros(7, length(sat));
-
+for i = 1:7
     for j = 1:length(sat)
        elem  = orbitalElements(sat(j));
-       elements(1, j) = elem.SemiMajorAxis;
-       elements(2, j) = elem.Eccentricity;
-       elements(3, j) = elem.Inclination;
-       elements(4, j) = elem.RightAscensionOfAscendingNode;
-       elements(5, j) = elem.ArgumentOfPeriapsis;
-       elements(6, j) = elem.TrueAnomaly;
-       elements(7, j) = elem.Period;
+       elements(i, j) = elem.SemiMajorAxis;
     end
-
+end
 %end
