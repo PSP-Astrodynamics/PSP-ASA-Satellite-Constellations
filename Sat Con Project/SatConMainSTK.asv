@@ -6,7 +6,7 @@ clc; clear; close all
 
 %Constellation Design Parameters
 P = 12; % # of planes
-S = 3;  % # of sats per plane
+S = 3; % # of sats per plane
 F = 5;  % Walker phasing parameter
 inc = 40;       % inclination [deg]
 a = 7078e3;     % semi-major axis. DOES NOT CHANGE [m]
@@ -26,9 +26,10 @@ STK.scenarioPath = 'C:\Users\evanc\Documents\STK_ODTK 13\SatCon\SatCon.sc';
 STK.root.Load(STK.scenarioPath);
 scenario = STK.root.CurrentScenario;
 
+
 satCon = scenario.Children.Item('iAmTheConstellationNow');
 
-%First Run
+
 times = runSTK(scenario); %Compute Accesses and Extract Coverage Durations
 fprintf("COVERAGE TIMES\n")
 areas = ["Little Bad: ", "Really Bad: ", "Priority:   "];
@@ -36,8 +37,7 @@ for i = 1:length(times)
     fprintf("%s %.3f sec \n", areas(i), times(i))
 end
 
-%Second Run
-satCon = updateConstellation(X, scenario, satCon);
+updateConstellation(X, scenario, satCon)
 
 times = runSTK(scenario); %Compute Accesses and Extract Coverage Durations
 fprintf("COVERAGE TIMES\n")
@@ -53,5 +53,5 @@ end
 %OUTPUT RESULTS
 
 %Leave and close STK
-%STK.root.CloseScenario();
-%STK.app.Quit;
+STK.root.CloseScenario();
+STK.app.Quit;
