@@ -53,6 +53,7 @@ function satCon = updateConstellation(X, scenario, satCon)
             sat.SetPropagatorType('ePropagatorTwoBody');
 
             prop = sat.Propagator;
+            prop.Propagate();
             state = prop.InitialState.Representation.ConvertTo('eOrbitStateClassical');
 
             state.SizeShapeType = 'eSizeShapeSemimajorAxis';
