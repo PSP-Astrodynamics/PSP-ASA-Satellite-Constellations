@@ -28,30 +28,36 @@ scenario = STK.root.CurrentScenario;
 
 satCon = scenario.Children.Item('iAmTheConstellationNow');
 
-%First Run
-times = runSTK(scenario); %Compute Accesses and Extract Coverage Durations
-fprintf("COVERAGE TIMES\n")
-areas = ["Little Bad: ", "Really Bad: ", "Priority:   "];
-for i = 1:length(times)
-    fprintf("%s %.3f sec \n", areas(i), times(i))
-end
+% ================= GA SETUP =================
 
-%Second Run
-satCon = updateConstellation(X, scenario, satCon);
+nvars = 4;   % [P, S, F, inc]
 
-times = runSTK(scenario); %Compute Accesses and Extract Coverage Durations
-fprintf("COVERAGE TIMES\n")
-areas = ["Little Bad: ", "Really Bad: ", "Priority:   "];
-for i = 1:length(times)
-    fprintf("%s %.3f sec \n", areas(i), times(i))
-end
+lb = [1, 1, 0, 0];      % lower bounds
+ub = [15, 10, 10, 98];  % upper bounds
 
-%CALCULATE FITNESS
+% Ensure integers are handled inside fitnessFcn via round()
 
-%RUN GA
+options = optimoptions('ga', ...
+    'PopulationSize', 15, ...
+    'MaxGenerations', 20, ...
+    'Display', 'iter', ...
+    'UseParallel', false);   % IMPORTANT for STK COM
 
-%OUTPUT RESULTS
+% ================= RUN GA =================
+
+fitnessHandle = @(x) calculateFitness(X, scenario, satCon);
+
+[x_opt, fval] = ga(fitnessHandle, nvars, [], [], [], [], lb, ub, [], options);
+
+% ================= RESULTS =================
+
+fprintf('\nOptimal solution:\n');
+fprintf('P = %d\n', round(x_opt(1)));
+fprintf('S = %d\n', round(x_opt(2)));
+fprintf('F = %d\n', round(x_opt(3)));
+fprintf('inc = %.2f\n', x_opt(4));
+fprintf('Fitness = %.4f\n', fval);
 
 %Leave and close STK
-%STK.root.CloseScenario();
-%STK.app.Quit;
+STK.root.CloseScenario();
+STK.app.Quit;
