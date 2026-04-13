@@ -1,44 +1,40 @@
-function [fitness] = calculateFitness(population, timeInGoodAreas, timeInBadAreas, timeInReallyBadAreas)
+function f = calculateFitness(x, scenario, satCon)
 
-% population is an (i) x [planes, slots, phase, inclination, RAAN] matrix
-% timeInGoodAreas is an (i) x [seconds] vector
-% timeInBadAreas is an (i) x [seconds] vector
-% timeInReallyBadAreas is an (i) x [seconds] vector
+    % Enforce integer design variables
+    P   = max(1, round(x(1)));
+    S   = max(1, round(x(2)));
+    F   = round(x(3));
+    inc = x(4);
 
-% calculates the fitness of each (chromosone, individual, etc) based on the
-% orbital parameters, and time spent in areas of interest
+    x = [P, S, F, inc];
 
-weight.orbs = 0.4;
-weight.goodArea = 0.3;
-weight.reallyBadArea = 0.2;
-weight.badArea = 0.1;
+    try
+        % 1. Update constellation
+        updateConstellation(x, scenario, satCon);
 
-maxGoodTime = max(timeInGoodAreas);
-maxBadTime = max(timeInBadAreas);
-maxReallyBadTime = max(timeInReallyBadAreas);
+        % 2. Run STK coverage analysis
+        % Expected output order:
+        % [LittleBad, ReallyBad, Priority]
+        times = runSTK(scenario);
 
-fitness = zeros(size(population));
+        littleBad = times(1);
+        reallyBad = times(2);
+        priority  = times(3);
 
-for i = 1:length(population)
+        % 3. WEIGHTS (edit as needed)
+        wPriority  = 0.6;
+        wBad       = 0.3;
+        wVeryBad   = 0.1;
 
-    score = 0;
-    if population(i,1)*population(i,2)>20 && population(i,1)*population(i,2)<2000 % planes * slots gives total number of satellites
-        score = 1;
+        % 4. Fitness (maximize coverage → minimize negative)
+        score = (wPriority  * priority^2) + ...
+                (wBad       * reallyBad) + ...
+                (wVeryBad   * littleBad);
+
+        f = -score;
+
+    catch
+        % Penalize invalid STK states
+        f = 1e6;
     end
-    fitness(i) = fitness(i) + score * weight.orbs;
-
-    score = 0;
-    score = timeInGoodAreas(i)/maxGoodTime;
-    fitness(i) = fitness(i) + score* weight.goodArea;
-
-    score = 0;
-    score = 1 - timeInBadAreas(i)/maxBadTime;
-    fitness(i) = fitness(i) + score * weight.badArea;
-
-    score = 0;
-    score = 1 - timeInReallyBadAreas(i)/maxReallyBadTime;
-    fitness(i) = fitness(i) + score * weight.reallyBadArea;
-
-end
-
 end

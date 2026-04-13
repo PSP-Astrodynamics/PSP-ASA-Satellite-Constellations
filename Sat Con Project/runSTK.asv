@@ -1,7 +1,0 @@
-function [coverageTime] = runSTK()
-    %This function runs the STK propagation and returns the coverage time
-    %for the three coverage definitions.
-
-
-    coverageTimes = [durationLB, durationRB, durationP];
-end
