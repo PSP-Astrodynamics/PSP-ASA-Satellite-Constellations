@@ -27,6 +27,17 @@ STK.root.Load(STK.scenarioPath);
 scenario = STK.root.CurrentScenario;
 
 satCon = scenario.Children.Item('iAmTheConstellationNow');
+Tmax = 151;
+
+for i = 1:Tmax
+    satName = sprintf('Sat_%d', i);
+    try
+        scenario.Children.Item(satName); % already exists
+    catch
+        sat = scenario.Children.New('eSatellite', satName);
+        sat.SetPropagatorType('ePropagatorTwoBody');
+    end
+end
 
 % ================= GA SETUP =================
 
@@ -45,7 +56,7 @@ options = optimoptions('ga', ...
 
 % ================= RUN GA =================
 
-fitnessHandle = @(x) calculateFitness(X, scenario, satCon);
+fitnessHandle = @(x) calculateFitness(x, scenario, satCon);
 
 [x_opt, fval] = ga(fitnessHandle, nvars, [], [], [], [], lb, ub, [], options);
 

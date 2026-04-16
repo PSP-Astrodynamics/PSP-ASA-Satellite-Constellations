@@ -1,17 +1,12 @@
 function satCon = updateConstellation(X, scenario, satCon)
 
-    % Remove old constellation
-    try
-        scenario.Children.Item('satCon').Unload();
-    end
-
+    % Recreate fresh constellation object
     satCon = scenario.Children.New('eConstellation', 'satCon');
-
     pause(0.1);
 
     % Unpack parameters
-    P = max(1, round(X(1))); % # of planes
-    S = max(1, round(X(2))); % # of sats per plane
+    P   = round(X(1)); % # of planes
+    S   = round(X(2)); % # of sats per plane
     F   = round(X(3)); % phasing parameter
     inc = X(4);        % inclination [deg]
 
@@ -32,17 +27,11 @@ function satCon = updateConstellation(X, scenario, satCon)
 
             satName = sprintf('Sat_%d_%d', p+1, s+1);
 
-            try
-                sat = scenario.Children.Item(satName);
-            catch
-                sat = scenario.Children.New('eSatellite', satName);
-            end
-
+            sat = scenario.Children.Item(satName);
             sat.SetPropagatorType('ePropagatorTwoBody');
 
             prop = sat.Propagator;
             state = prop.InitialState.Representation.ConvertTo('eOrbitStateClassical');
-            prop.Propagate();
 
             state.SizeShapeType = 'eSizeShapeSemimajorAxis';
             state.SizeShape.SemimajorAxis = a;

@@ -8,7 +8,7 @@ function f = calculateFitness(x, scenario, satCon)
 
     x = [P, S, F, inc];
 
-    try
+    %try
         % 1. Update constellation
         updateConstellation(x, scenario, satCon);
 
@@ -33,8 +33,8 @@ function f = calculateFitness(x, scenario, satCon)
 
         f = -score;
 
-    catch
+    %catch
         % Penalize invalid STK states
-        f = 1e6;
-    end
+        %f = 1e6;
+    %end
 end
