@@ -9,8 +9,10 @@ function f = calculateFitness(x, scenario, satCon)
     x = [P, S, F, inc];
 
     %try
-        % 1. Update constellation
+        % 1. Update constellation & Reset Time
         updateConstellation(x, scenario, satCon);
+        % Reset time BEFORE computing coverage
+        root.ExecuteCommand('Animate * Reset');
 
         % 2. Run STK coverage analysis
         % Expected output order:
