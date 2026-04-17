@@ -1,4 +1,4 @@
-function f = calculateFitness(x, scenario, satCon)
+function f = calculateFitness(x, scenario, satCon, root)
 
     % Enforce integer design variables
     P   = max(1, round(x(1)));

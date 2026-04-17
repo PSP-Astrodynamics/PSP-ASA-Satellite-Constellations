@@ -24,6 +24,7 @@ STK.root = STK.app.Personality2;
 STK.root.CloseScenario();
 STK.scenarioPath = 'C:\Users\evanc\Documents\STK_ODTK 13\SatCon\SatCon.sc';
 STK.root.Load(STK.scenarioPath);
+root = STK.root;
 scenario = STK.root.CurrentScenario;
 
 satCon = scenario.Children.Item('iAmTheConstellationNow');
@@ -56,7 +57,7 @@ options = optimoptions('ga', ...
 
 % ================= RUN GA =================
 
-fitnessHandle = @(x) calculateFitness(x, scenario, satCon);
+fitnessHandle = @(x) calculateFitness(x, scenario, satCon, root);
 
 [x_opt, fval] = ga(fitnessHandle, nvars, [], [], [], [], lb, ub, [], options);
 
