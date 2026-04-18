@@ -28,7 +28,7 @@ root = STK.root;
 scenario = STK.root.CurrentScenario;
 
 satCon = scenario.Children.Item('iAmTheConstellationNow');
-Tmax = 151;
+Tmax = 30;
 
 for i = 1:Tmax
     satName = sprintf('Sat_%d', i);
