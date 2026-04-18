@@ -10,7 +10,7 @@ function f = calculateFitness(x, scenario, satCon, root)
 
     %try
         % 1. Update constellation & Reset Time
-        updateConstellation(x, scenario, satCon);
+        updateConstellation(x, scenario, satCon, root);
         % Reset time BEFORE computing coverage
         root.ExecuteCommand('Animate * Reset');
 

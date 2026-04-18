@@ -9,7 +9,7 @@ P = 12; % # of planes
 S = 3;  % # of sats per plane
 F = 5;  % Walker phasing parameter
 inc = 40;       % inclination [deg]
-a = 7078e3;     % semi-major axis. DOES NOT CHANGE [m]
+a = 707.8e3;     % semi-major axis. DOES NOT CHANGE [m]
 
 X = [P, S, F, inc]; %parameters to pass to GA
 
@@ -28,7 +28,7 @@ root = STK.root;
 scenario = STK.root.CurrentScenario;
 
 satCon = scenario.Children.Item('iAmTheConstellationNow');
-Tmax = 30;
+Tmax = 10;
 
 for i = 1:Tmax
     satName = sprintf('Sat_%d', i);
@@ -51,7 +51,7 @@ ub = [15, 10, 10, 98];  % upper bounds
 
 options = optimoptions('ga', ...
     'PopulationSize', 15, ...
-    'MaxGenerations', 20, ...
+    'MaxGenerations', 2, ...
     'Display', 'iter', ...
     'UseParallel', false);   % IMPORTANT for STK COM
 

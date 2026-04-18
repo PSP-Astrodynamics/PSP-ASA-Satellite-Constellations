@@ -1,4 +1,4 @@
-function satCon = updateConstellation(X, scenario, satCon)
+function satCon = updateConstellation(X, scenario, satCon, root)
 
     % Remove old constellation
     try
@@ -15,7 +15,7 @@ function satCon = updateConstellation(X, scenario, satCon)
     F   = round(X(3)); % phasing parameter
     inc = X(4);        % inclination [deg]
 
-    a   = 7078e3;      % semi-major axis [m] — fixed
+    a   = 707.8e3;      % semi-major axis [m] — fixed
     ecc = 0;           % circular orbit
     aop = 0;           % argument of perigee [deg]
     T   = P * S;       % total satellites
@@ -39,7 +39,8 @@ function satCon = updateConstellation(X, scenario, satCon)
             end
 
             sat.SetPropagatorType('ePropagatorTwoBody');
-
+            
+            root.Rewind;
             prop = sat.Propagator;
             state = prop.InitialState.Representation.ConvertTo('eOrbitStateClassical');
             prop.Propagate();
