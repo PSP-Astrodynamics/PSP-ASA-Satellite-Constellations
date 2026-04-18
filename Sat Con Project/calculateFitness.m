@@ -25,18 +25,15 @@ function f = calculateFitness(x, scenario, satCon)
 
         % 3. WEIGHTS (edit as needed)
         wPriority  = 0.6;
-        wBad       = 0.3;
-        wVeryBad   = 0.1;
+        wBad       = 0.1;
+        wVeryBad   = 0.3;
 
         % 4. Fitness (maximize coverage → minimize negative)
-        score = (wPriority  * priority^2) + ...
-                (wBad       * reallyBad) + ...
-                (wVeryBad   * littleBad);
+        score = wPriority*(priority/86400)^2 - ...
+                wBad*(reallyBad/86400)^2 - ...
+                wVeryBad*(littleBad/86400)^2;
 
-        f = -score;
+        f = -1*score;
 
-    %catch
-        % Penalize invalid STK states
-        %f = 1e6;
-    %end
+    
 end
