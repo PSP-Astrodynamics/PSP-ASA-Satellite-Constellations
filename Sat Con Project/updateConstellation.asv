@@ -15,7 +15,7 @@ function satCon = updateConstellation(X, scenario, satCon, root)
     F   = round(X(3)); % phasing parameter
     inc = X(4);        % inclination [deg]
 
-    a   = 7078;      % semi-major axis [km] — fixed
+    a   = 707.8e3;      % semi-major axis [m] — fixed
     ecc = 0;           % circular orbit
     aop = 0;           % argument of perigee [deg]
     T   = P * S;       % total satellites

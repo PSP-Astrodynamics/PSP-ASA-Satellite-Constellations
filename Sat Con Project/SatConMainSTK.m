@@ -5,11 +5,11 @@
 clc; clear; close all
 
 %Constellation Design Parameters
-P = 12; % # of planes
+P = 4; % # of planes
 S = 3;  % # of sats per plane
-F = 5;  % Walker phasing parameter
+F = 2;  % Walker phasing parameter
 inc = 40;       % inclination [deg]
-a = 707.8e3;     % semi-major axis. DOES NOT CHANGE [m]
+a = 7078;     % semi-major axis. DOES NOT CHANGE [km]
 
 X = [P, S, F, inc]; %parameters to pass to GA
 
@@ -22,12 +22,13 @@ STK.root = STK.app.Personality2;
 
 %Define STK scenario, and load scenario
 STK.root.CloseScenario();
-STK.scenarioPath = 'C:\Users\evanc\Documents\STK_ODTK 13\SatCon\SatCon.sc';
+STK.scenarioPath = 'C:\Users\ncleg\OneDrive\Documents\STK_ODTK 13\SatCon - Copy\SatCon.sc';
 STK.root.Load(STK.scenarioPath);
+root = STK.root;
 scenario = STK.root.CurrentScenario;
 
 satCon = scenario.Children.Item('iAmTheConstellationNow');
-Tmax = 10;
+Tmax = 30;
 
 for i = 1:Tmax
     satName = sprintf('Sat_%d', i);
@@ -44,19 +45,19 @@ end
 nvars = 4;   % [P, S, F, inc]
 
 lb = [1, 1, 0, 0];      % lower bounds
-ub = [15, 10, 10, 98];  % upper bounds
+ub = [10, 8, 8, 98];  % upper bounds
 
 % Ensure integers are handled inside fitnessFcn via round()
 
 options = optimoptions('ga', ...
-    'PopulationSize', 10, ...
-    'MaxGenerations', 2, ...
+    'PopulationSize', 7, ...
+    'MaxGenerations', 4, ...
     'Display', 'iter', ...
     'UseParallel', false);   % IMPORTANT for STK COM
 
 % ================= RUN GA =================
 
-fitnessHandle = @(x) calculateFitness(x, scenario, satCon);
+fitnessHandle = @(x) calculateFitness(x, scenario, satCon, root);
 
 [x_opt, fval] = ga(fitnessHandle, nvars, [], [], [], [], lb, ub, [], options);
 

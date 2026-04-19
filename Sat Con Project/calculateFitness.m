@@ -1,4 +1,4 @@
-function f = calculateFitness(x, scenario, satCon)
+function f = calculateFitness(x, scenario, satCon, root)
 
     % Enforce integer design variables
     P   = max(1, round(x(1)));
@@ -10,8 +10,9 @@ function f = calculateFitness(x, scenario, satCon)
 
     %try
         % 1. Update constellation & Reset Time
-        updateConstellation(x, scenario, satCon);
+        updateConstellation(x, scenario, satCon, root);
         % Reset time BEFORE computing coverage
+        root.Rewind;
         root.ExecuteCommand('Animate * Reset');
 
         % 2. Run STK coverage analysis
@@ -32,8 +33,8 @@ function f = calculateFitness(x, scenario, satCon)
         score = wPriority*(priority/86400)^2 - ...
                 wBad*(reallyBad/86400)^2 - ...
                 wVeryBad*(littleBad/86400)^2;
-
+        
         f = -1*score;
-
+        
     
 end
