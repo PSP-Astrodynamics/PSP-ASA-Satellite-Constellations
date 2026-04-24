@@ -15,7 +15,7 @@ function satCon = updateConstellation(X, scenario, satCon, root)
     F   = round(X(3)); % phasing parameter
     inc = X(4);        % inclination [deg]
 
-    a   = 707.8e3;      % semi-major axis [m] — fixed
+    a   = 7078;      % semi-major axis [km] — fixed
     ecc = 0;           % circular orbit
     aop = 0;           % argument of perigee [deg]
     T   = P * S;       % total satellites
@@ -43,7 +43,7 @@ function satCon = updateConstellation(X, scenario, satCon, root)
             root.Rewind;
             prop = sat.Propagator;
             state = prop.InitialState.Representation.ConvertTo('eOrbitStateClassical');
-            prop.Propagate();
+            %prop.Propagate();
 
             state.SizeShapeType = 'eSizeShapeSemimajorAxis';
             state.SizeShape.SemimajorAxis = a;
@@ -83,4 +83,3 @@ function satCon = updateConstellation(X, scenario, satCon, root)
         end
     end
 end
-
