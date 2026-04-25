@@ -1,16 +1,19 @@
-function f = calculateFitness(x, scenario, satCon, root)
+function f = calculateFitness(x, scenario, root)
 
     % Enforce integer design variables
     P   = max(1, round(x(1)));
     S   = max(1, round(x(2)));
     F   = round(x(3));
     inc = x(4);
-
+    if F>=P
+        F=P-1;
+    end
     x = [P, S, F, inc];
 
     %try
         % 1. Update constellation & Reset Time
-        updateConstellation(x, scenario, satCon, root);
+        updateConstellation(x, scenario, root);
+        
         % Reset time BEFORE computing coverage
         root.Rewind;
         root.ExecuteCommand('Animate * Reset');

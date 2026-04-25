@@ -1,4 +1,4 @@
-function satCon = updateConstellation(X, scenario, satCon, root)
+function  updateConstellation(X, scenario, root)
 
     % Remove old constellation
     try
@@ -13,6 +13,9 @@ function satCon = updateConstellation(X, scenario, satCon, root)
     P = max(1, round(X(1))); % # of planes
     S = max(1, round(X(2))); % # of sats per plane
     F   = round(X(3)); % phasing parameter
+    if F>=P
+        F=P-1;
+    end
     inc = X(4);        % inclination [deg]
 
     a   = 7078;      % semi-major axis [km] — fixed
@@ -82,4 +85,6 @@ function satCon = updateConstellation(X, scenario, satCon, root)
             end
         end
     end
+
+
 end
