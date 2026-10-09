@@ -354,6 +354,24 @@ BEGIN Scenario
         END ConnectReportUnits
 
         BEGIN ReportFavorites
+            BEGIN Class
+                Name		 CoverageDefinition
+                BEGIN Favorite
+                    Type		 Report
+                    BaseDir		 Install
+                    Style		 Percent Coverage
+                END Favorite
+                BEGIN Favorite
+                    Type		 Report
+                    BaseDir		 Install
+                    Style		 Global Coverage
+                END Favorite
+                BEGIN Favorite
+                    Type		 Graph
+                    BaseDir		 Install
+                    Style		 Access Duration
+                END Favorite
+            END Class
         END ReportFavorites
 
         BEGIN ADFFileData
@@ -1811,6 +1829,7 @@ Training Level 2.1 (6) Using Terrain, Chains, and Constellations
                     BEGIN RecordMovie
                         OutputFormat		 VIDEO
                         SdfSelected		 No
+                        Directory		 C:\Users\evanc\Documents\STK_ODTK 13\SharingTest
                         BaseName		 Frame
                         Digits		 4
                         Frame		 0
@@ -1999,6 +2018,7 @@ Training Level 2.1 (6) Using Terrain, Chains, and Constellations
                         BEGIN RecordMovie
                             OutputFormat		 VIDEO
                             SdfSelected		 No
+                            Directory		 C:\Users\evanc\Documents\STK_ODTK 13\SharingTest
                             BaseName		 Frame
                             Digits		 4
                             Frame		 0
@@ -2186,6 +2206,7 @@ Training Level 2.1 (6) Using Terrain, Chains, and Constellations
                         BEGIN RecordMovie
                             OutputFormat		 VIDEO
                             SdfSelected		 No
+                            Directory		 C:\Users\evanc\Documents\STK_ODTK 13\SharingTest
                             BaseName		 Frame
                             Digits		 4
                             Frame		 0
@@ -2297,6 +2318,12 @@ Training Level 2.1 (6) Using Terrain, Chains, and Constellations
 
     BEGIN SubObjects
 
+        Class CoverageDefinition
+
+            CoverageDefinition1		
+
+        END Class
+
         Class Satellite
 
             Satellite1		
@@ -2308,9 +2335,18 @@ Training Level 2.1 (6) Using Terrain, Chains, and Constellations
     BEGIN References
         Instance *
             *		
+            CoverageDefinition/CoverageDefinition1		
+        END Instance
+        Instance CoverageDefinition/CoverageDefinition1
+            CoverageDefinition/CoverageDefinition1		
         END Instance
         Instance Satellite/Satellite1
+            CoverageDefinition/CoverageDefinition1		
             Satellite/Satellite1		
+            Satellite/Satellite1/Sensor/Sensor1		
+        END Instance
+        Instance Satellite/Satellite1/Sensor/Sensor1
+            Satellite/Satellite1/Sensor/Sensor1		
         END Instance
     END References
 
